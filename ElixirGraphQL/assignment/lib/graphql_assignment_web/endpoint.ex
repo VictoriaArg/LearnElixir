@@ -1,5 +1,6 @@
 defmodule GraphqlAssignmentWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :graphql_assignment
+
   use Absinthe.Phoenix.Endpoint
 
   socket("/socket", GraphqlAssignmentWeb.UserSocket, websocket: true, longpoll: false)

@@ -27,7 +27,7 @@ defmodule GraphqlAssignmentWeb.Schema do
 
   query do
     field :user, :user do
-      arg :id, non_null(:id)
+      arg(:id, non_null(:id))
 
       resolve(fn %{id: id}, _ ->
         id = String.to_integer(id)
@@ -46,11 +46,12 @@ defmodule GraphqlAssignmentWeb.Schema do
           likes_phone_calls: _likes_phone_calls,
           likes_faxes: _likes_faxes
         } = preferences,
-        _ -> User.get_by_preferences(preferences)
-      _, _ ->
+        _ ->
+          User.get_by_preferences(preferences)
+
+        _, _ ->
           {:ok, []}
-      end
-          )
+      end)
     end
 
     field :users_by_name, list_of(:user) do
@@ -59,11 +60,12 @@ defmodule GraphqlAssignmentWeb.Schema do
       resolve(fn
         %{name: name}, _ ->
           User.get_by_name(name)
+
         _, _ ->
           {:error,
-               %{
-                 message: "name not provided"
-               }}
+           %{
+             message: "name not provided"
+           }}
       end)
     end
   end
@@ -118,16 +120,15 @@ defmodule GraphqlAssignmentWeb.Schema do
 
   subscription do
     field :created_user, :user do
-      trigger :create_user, topic: fn _ -> "new_user" end
+      trigger(:create_user, topic: fn _ -> "new_user" end)
 
       config(fn _, _ ->
         {:ok, topic: "new_user"}
       end)
-
     end
 
     field :updated_user_preferences, :user do
-      trigger :update_user_preferences, topic: fn %{id: id} -> Integer.to_string(id) end
+      trigger(:update_user_preferences, topic: fn %{id: id} -> Integer.to_string(id) end)
 
       config(fn args, _info ->
         {:ok, topic: args.id}

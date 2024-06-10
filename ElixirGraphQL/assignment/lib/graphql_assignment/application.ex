@@ -11,12 +11,12 @@ defmodule GraphqlAssignment.Application do
       # Start the Telemetry supervisor
       GraphqlAssignmentWeb.Telemetry,
       # Start the PubSub system
-      {Phoenix.PubSub, name: :assignment_pubsub},
+      {Phoenix.PubSub, name: :my_pubsub},
       # Start the Endpoint (http/https)
       GraphqlAssignmentWeb.Endpoint,
       # Start a worker by calling: GraphqlAssignment.Worker.start_link(arg)
       # {GraphqlAssignment.Worker, arg}
-      {Absinthe.Subscription, [GraphqlAssignmentWeb.Endpoint]}
+      {Absinthe.Subscription, GraphqlAssignmentWeb.Endpoint}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

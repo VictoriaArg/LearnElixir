@@ -34,7 +34,6 @@ defmodule GraphqlAssignment.MixProject do
   defp deps do
     [
       {:phoenix, "~> 1.7.10"},
-      {:phoenix_pubsub, "~> 2.1.3"},
       {:phoenix_live_dashboard, "~> 0.6"},
       {:phoenix_view, "~> 2.0"},
       {:esbuild, "~> 0.4", runtime: Mix.env() == :dev},
@@ -44,9 +43,9 @@ defmodule GraphqlAssignment.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:absinthe, "~> 1.7.6"},
-      {:absinthe_plug, "~> 1.5.8"},
-      {:absinthe_phoenix, "~> 2.0.2"}
+      {:absinthe, "~> 1.7"},
+      {:phoenix_pubsub, "~> 2.0"},
+      {:absinthe_phoenix, "~> 2.0"}
     ]
   end
 

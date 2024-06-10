@@ -1,6 +1,5 @@
 defmodule GraphqlAssignmentWeb.User do
-
-@users [
+  @users [
     %{
       id: 1,
       name: "Bill",
@@ -49,89 +48,89 @@ defmodule GraphqlAssignmentWeb.User do
   @spec get(String.t()) :: {:error, map()} | {:ok, map()}
   def get(id) do
     case Enum.find(@users, &(&1.id === id)) do
-          nil -> {:error, %{message: "not found", details: %{id: id}}}
-          user -> {:ok, user}
-     end
+      nil -> {:error, %{message: "not found", details: %{id: id}}}
+      user -> {:ok, user}
+    end
   end
 
   @spec get_by_name(String.t()) :: {:error, map()} | {:ok, map()}
   def get_by_name(name) do
     case Enum.filter(
-                 @users,
-                 &(&1.name === name)
-               ) do
-            [] ->
-              {:error,
-               %{
-                 message: "not found",
-                 details: %{
-                   name: name
-                 }
-               }}
+           @users,
+           &(&1.name === name)
+         ) do
+      [] ->
+        {:error,
+         %{
+           message: "not found",
+           details: %{
+             name: name
+           }
+         }}
 
-            users ->
-              {:ok, users}
-          end
+      users ->
+        {:ok, users}
+    end
   end
 
   @spec get_by_preferences(map()) :: {:error, map()} | {:ok, list()}
   def get_by_preferences(preferences) do
-  case Enum.filter(
-                 @users,
-                 &(&1.preferences === preferences)
-               ) do
-            [] ->
-              {:error,
-               %{
-                 message: "not found",
-                 details: %{
-                   preferences: preferences
-                 }
-               }}
+    case Enum.filter(
+           @users,
+           &(&1.preferences === preferences)
+         ) do
+      [] ->
+        {:error,
+         %{
+           message: "not found",
+           details: %{
+             preferences: preferences
+           }
+         }}
 
-            users ->
-              {:ok, users}
-          end
+      users ->
+        {:ok, users}
+    end
   end
 
   @spec create(map()) :: {:error, map()} | {:ok, map()}
   def create(%{id: id, name: name, email: email, preferences: preferences} = _params) do
     case Enum.find(@users, &(&1.id === id)) do
-            nil ->
-              with {:ok, new_user} <- create_new_user(id, name, email, preferences) do
-              {:ok, new_user}
-              end
-            _user ->
-              {:error, %{message: "id already in use", details: %{id: id}}}
-          end
+      nil ->
+        with {:ok, new_user} <- create_new_user(id, name, email, preferences) do
+          {:ok, new_user}
+        end
+
+      _user ->
+        {:error, %{message: "id already in use", details: %{id: id}}}
+    end
   end
 
   @spec update(String.t(), map()) :: {:error, map()} | {:ok, map()}
   def update(id, params) do
     case Enum.find(@users, &(&1.id === id)) do
-            nil ->
-              {:error, %{message: "user not found", details: %{id: id}}}
+      nil ->
+        {:error, %{message: "user not found", details: %{id: id}}}
 
-            user ->
-              {:ok, Map.merge(user, params)}
-          end
+      user ->
+        {:ok, Map.merge(user, params)}
+    end
   end
 
   @spec update(String.t(), map()) :: {:error, map()} | {:ok, map()}
   def update_preferences(id, params) do
     case Enum.find(@users, &(&1.id === id)) do
-            nil ->
-              {:error, %{message: "user not found", details: %{id: id}}}
+      nil ->
+        {:error, %{message: "user not found", details: %{id: id}}}
 
-            user ->
-              {_id, preferences} = Map.pop!(params, :user_id)
-              updated_user = Map.merge(user, preferences)
-              {:ok, updated_user}
-          end
+      user ->
+        {_id, preferences} = Map.pop!(params, :user_id)
+        updated_user = Map.merge(user, preferences)
+        {:ok, updated_user}
+    end
   end
 
   defp create_new_user(id, name, email, preferences) do
     {:ok, Map.new(id: id, name: name, email: email, preferences: preferences)}
   end
-
 end

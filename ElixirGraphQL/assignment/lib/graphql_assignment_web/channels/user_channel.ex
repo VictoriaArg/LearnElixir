@@ -11,7 +11,7 @@ defmodule GraphqlAssignmentWeb.UserChannel do
     {:reply, %{"accepted" => true}, socket}
   end
 
-    def handle_in("updated_user_preferences", %{"id" => id}, socket) do
+  def handle_in("updated_user_preferences", %{"id" => id}, socket) do
     broadcast("updated_user_preferences", socket, %{"id" => id})
 
     {:reply, %{"accepted" => true}, socket}

@@ -8,8 +8,7 @@ config :graphql_assignment, GraphqlAssignmentWeb.Endpoint,
   server: false
 
 # In test we don't send emails.
-config :graphql_assignment, GraphqlAssignment.Mailer,
-  adapter: Swoosh.Adapters.Test
+config :graphql_assignment, GraphqlAssignment.Mailer, adapter: Swoosh.Adapters.Test
 
 # Print only warnings and errors during test
 config :logger, level: :warn
