@@ -157,7 +157,7 @@ defmodule GraphqlAssignmentWeb.Schema do
           case Enum.find(@users, &(&1.id === id)) do
             nil ->
               with {:ok, new_user} <- create_new_user(id, name, email, preferences) do
-              {:ok, @users ++ [new_user]}
+              {:ok, new_user}
               end
             _user ->
               {:error, %{message: "id already in use", details: %{id: id}}}
@@ -212,20 +212,20 @@ defmodule GraphqlAssignmentWeb.Schema do
 
   subscription do
     field :created_user, :user do
+      trigger :create_user, topic: fn _ -> "new_user" end
+
       config(fn _, _ ->
         {:ok, topic: "new_user"}
       end)
 
-      trigger :create_user, topic: fn _ -> "new_user" end
     end
 
     field :updated_user_preferences, :user do
+      trigger :update_user_preferences, topic: fn %{id: id} -> Integer.to_string(id) end
+
       config(fn args, _info ->
         {:ok, topic: args.id}
       end)
-
-      trigger :update_user_preferences, topic: fn %{id: id} -> {:ok, topic: id} end
-
     end
   end
 

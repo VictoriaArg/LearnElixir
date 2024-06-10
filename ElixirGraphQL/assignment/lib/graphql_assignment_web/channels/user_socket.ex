@@ -1,5 +1,6 @@
 defmodule GraphqlAssignmentWeb.UserSocket do
-  use Phoenix.Socket
+use Phoenix.Socket
+use Absinthe.Phoenix.Socket, schema: GraphqlAssignmentWeb.Schema
 
   channel("users", GraphqlAssignmentWeb.UserChannel)
 

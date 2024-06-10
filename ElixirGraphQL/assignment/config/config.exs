@@ -11,7 +11,7 @@ import Config
 config :graphql_assignment, GraphqlAssignmentWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: GraphqlAssignmentWeb.ErrorView, accepts: ~w(json), layout: false],
-  pubsub_server: GraphqlAssignment.PubSub,
+  pubsub_server: :assignment_pubsub,
   live_view: [signing_salt: "yB46HMuw"]
 
 # Configures the mailer
