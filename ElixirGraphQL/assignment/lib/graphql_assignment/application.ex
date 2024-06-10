@@ -11,7 +11,7 @@ defmodule GraphqlAssignment.Application do
       # Start the Telemetry supervisor
       GraphqlAssignmentWeb.Telemetry,
       # Start the PubSub system
-      {Phoenix.PubSub, name: :assignment_pubsub}, ##Algo aca capaz?
+      {Phoenix.PubSub, name: :assignment_pubsub},
       # Start the Endpoint (http/https)
       GraphqlAssignmentWeb.Endpoint,
       # Start a worker by calling: GraphqlAssignment.Worker.start_link(arg)
