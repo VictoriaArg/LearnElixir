@@ -1,5 +1,6 @@
 defmodule GraphqlAssignmentWeb.Schema do
   use Absinthe.Schema
+  alias GraphqlAssignmentWeb.User
 
   @desc "A user that has name, email, and preferences"
   object :user do
@@ -24,60 +25,13 @@ defmodule GraphqlAssignmentWeb.Schema do
     field(:likes_faxes, :boolean)
   end
 
-  @users [
-    %{
-      id: 1,
-      name: "Bill",
-      email: "bill@gmail.com",
-      preferences: %{
-        likes_emails: false,
-        likes_phone_calls: true,
-        likes_faxes: true
-      }
-    },
-    %{
-      id: 2,
-      name: "Alice",
-      email: "alice@gmail.com",
-      preferences: %{
-        likes_emails: true,
-        likes_phone_calls: false,
-        likes_faxes: true
-      }
-    },
-    %{
-      id: 3,
-      name: "Jill",
-      email: "jill@hotmail.com",
-      preferences: %{
-        likes_emails: true,
-        likes_phone_calls: true,
-        likes_faxes: false
-      }
-    },
-    %{
-      id: 6,
-      name: "Timmmy",
-      email: "timmmy@gmail.com",
-      preferences: %{
-        likes_emails: false,
-        likes_phone_calls: false,
-        likes_faxes: false
-      }
-    }
-  ]
-
   query do
     field :user, :user do
       arg :id, non_null(:id)
 
       resolve(fn %{id: id}, _ ->
         id = String.to_integer(id)
-
-        case Enum.find(@users, &(&1.id === id)) do
-          nil -> {:error, %{message: "not found", details: %{id: id}}}
-          user -> {:ok, user}
-        end
+        User.get(id)
       end)
     end
 
@@ -92,27 +46,11 @@ defmodule GraphqlAssignmentWeb.Schema do
           likes_phone_calls: _likes_phone_calls,
           likes_faxes: _likes_faxes
         } = preferences,
-        _ ->
-          case Enum.filter(
-                 @users,
-                 &(&1.preferences === preferences)
-               ) do
-            [] ->
-              {:error,
-               %{
-                 message: "not found",
-                 details: %{
-                   preferences: preferences
-                 }
-               }}
-
-            users ->
-              {:ok, users}
-          end
-
-        _, _ ->
-          {:ok, @users}
-      end)
+        _ -> User.get_by_preferences(preferences)
+      _, _ ->
+          {:ok, []}
+      end
+          )
     end
 
     field :users_by_name, list_of(:user) do
@@ -120,25 +58,12 @@ defmodule GraphqlAssignmentWeb.Schema do
 
       resolve(fn
         %{name: name}, _ ->
-          case Enum.filter(
-                 @users,
-                 &(&1.name === name)
-               ) do
-            [] ->
-              {:error,
-               %{
-                 message: "not found",
-                 details: %{
-                   name: name
-                 }
-               }}
-
-            users ->
-              {:ok, users}
-          end
-
+          User.get_by_name(name)
         _, _ ->
-          {:ok, @users}
+          {:error,
+               %{
+                 message: "name not provided"
+               }}
       end)
     end
   end
@@ -151,17 +76,12 @@ defmodule GraphqlAssignmentWeb.Schema do
       arg(:preferences, :user_preferences_input)
 
       resolve(fn
-        %{id: id, name: name, email: email, preferences: preferences}, _ ->
+        %{id: id, name: _name, email: _email, preferences: _preferences} = params, _ ->
           id = String.to_integer(id)
 
-          case Enum.find(@users, &(&1.id === id)) do
-            nil ->
-              with {:ok, new_user} <- create_new_user(id, name, email, preferences) do
-              {:ok, new_user}
-              end
-            _user ->
-              {:error, %{message: "id already in use", details: %{id: id}}}
-          end
+          params = Map.replace(params, :id, id)
+
+          User.create(params)
 
         _, _ ->
           {:error, %{message: "arguments not provided"}}
@@ -177,13 +97,7 @@ defmodule GraphqlAssignmentWeb.Schema do
         %{id: id, name: _name, email: _email} = params, _ ->
           id = String.to_integer(id)
 
-          case Enum.find(@users, &(&1.id === id)) do
-            nil ->
-              {:error, %{message: "user not found", details: %{id: id}}}
-
-            user ->
-              {:ok, Map.merge(user, params)}
-          end
+          User.update(id, params)
       end)
     end
 
@@ -197,15 +111,7 @@ defmodule GraphqlAssignmentWeb.Schema do
         %{user_id: id} = params, _ ->
           id = String.to_integer(id)
 
-          case Enum.find(@users, &(&1.id === id)) do
-            nil ->
-              {:error, %{message: "user not found", details: %{id: id}}}
-
-            user ->
-              {_id, preferences} = Map.pop!(params, :user_id)
-              updated_user = Map.merge(user, preferences)
-              {:ok, updated_user}
-          end
+          User.update_preferences(id, params)
       end)
     end
   end
@@ -227,9 +133,5 @@ defmodule GraphqlAssignmentWeb.Schema do
         {:ok, topic: args.id}
       end)
     end
-  end
-
-  defp create_new_user(id, name, email, preferences) do
-    {:ok, Map.new(id: id, name: name, email: email, preferences: preferences)}
   end
 end
