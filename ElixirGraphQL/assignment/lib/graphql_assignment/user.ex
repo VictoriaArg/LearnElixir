@@ -75,10 +75,9 @@ defmodule GraphqlAssignmentWeb.User do
 
   @spec get_by_preferences(map()) :: {:error, map()} | {:ok, list()}
   def get_by_preferences(preferences) do
-    case Enum.filter(
-           @users,
-           &(&1.preferences === preferences)
-         ) do
+    case Enum.filter(@users, fn user ->
+           matches_preferences?(user.preferences, preferences)
+         end) do
       [] ->
         {:error,
          %{
@@ -132,5 +131,11 @@ defmodule GraphqlAssignmentWeb.User do
 
   defp create_new_user(id, name, email, preferences) do
     {:ok, Map.new(id: id, name: name, email: email, preferences: preferences)}
+  end
+
+  defp matches_preferences?(user_prefs, input_prefs) do
+    Enum.all?(input_prefs, fn {key, value} ->
+      Map.get(user_prefs, key) == value
+    end)
   end
 end

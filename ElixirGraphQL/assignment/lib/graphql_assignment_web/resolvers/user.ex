@@ -6,18 +6,9 @@ defmodule GraphqlAssignmentWeb.Resolvers.User do
     User.get(id)
   end
 
-  def get_all(
-        %{
-          likes_emails: _likes_emails,
-          likes_phone_calls: _likes_phone_calls,
-          likes_faxes: _likes_faxes
-        } = preferences,
-        _
-      ) do
+  def get_by_preferences(preferences, _) do
     User.get_by_preferences(preferences)
   end
-
-  def get_all(_, _), do: {:ok, []}
 
   def get_by_name(name, _), do: User.get_by_name(name)
 

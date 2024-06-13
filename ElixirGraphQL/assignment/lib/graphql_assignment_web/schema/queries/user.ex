@@ -15,7 +15,7 @@ defmodule GraphqlAssignmentWeb.Schema.Queries.User do
       arg(:likes_phone_calls, :boolean)
       arg(:likes_faxes, :boolean)
 
-      resolve(&Resolvers.User.get_all/2)
+      resolve(&Resolvers.User.get_by_preferences/2)
     end
 
     field :users_by_name, list_of(:user) do
