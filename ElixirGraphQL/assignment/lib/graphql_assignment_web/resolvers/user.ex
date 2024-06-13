@@ -1,7 +1,7 @@
 defmodule GraphqlAssignmentWeb.Resolvers.User do
   alias GraphqlAssignmentWeb.User
 
-  def get(id, _) do
+  def get(%{id: id}, _) do
     id = String.to_integer(id)
     User.get(id)
   end
