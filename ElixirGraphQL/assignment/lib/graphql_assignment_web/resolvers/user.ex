@@ -23,7 +23,7 @@ defmodule GraphqlAssignmentWeb.Resolvers.User do
 
   def create(%{id: id, name: _name, email: _email, preferences: _preferences} = params, _) do
     id = String.to_integer(id)
-    params = Map.replace(params, :id, id)
+    params = Map.update!(params, :id, fn _ -> id end)
     User.create(params)
   end
 
