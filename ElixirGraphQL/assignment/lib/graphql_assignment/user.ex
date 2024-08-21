@@ -1,4 +1,4 @@
-defmodule GraphqlAssignmentWeb.User do
+defmodule GraphqlAssignment.User do
   @users [
     %{
       id: 1,
