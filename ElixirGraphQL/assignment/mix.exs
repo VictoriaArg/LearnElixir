@@ -45,7 +45,10 @@ defmodule GraphqlAssignment.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:absinthe, "~> 1.7"},
       {:phoenix_pubsub, "~> 2.0"},
-      {:absinthe_phoenix, "~> 2.0"}
+      {:absinthe_phoenix, "~> 2.0"},
+      {:ecto_sql, "~> 3.0"},
+      {:postgrex, "~> 0.15"},
+      {:dotenv, "~> 3.0.0"}
     ]
   end
 

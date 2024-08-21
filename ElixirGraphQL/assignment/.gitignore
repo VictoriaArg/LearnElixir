@@ -32,3 +32,4 @@ graphql_assignment-*.tar
 npm-debug.log
 /assets/node_modules/
 
+.ENV
