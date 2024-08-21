@@ -1,5 +1,7 @@
 # GraphqlAssignment
 
+This is a project for modules 3 and 4 of the course https://course.learn-elixir.dev/
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
