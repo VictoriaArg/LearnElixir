@@ -10,8 +10,9 @@ import Config
 config :graphql_assignment, GraphqlAssignment.Repo,
   database: "graphql_assignment_repo",
   username: "postgres",
-  password: System.get_env("DB_PASSWORD") | "postgres",
-  hostname: "localhost"
+  password: System.get_env("DB_PASSWORD") || "postgres",
+  hostname: "localhost",
+    show_sensitive_data_on_connection_error: true
 
   config :graphql_assignment,
       ecto_repos: [GraphqlAssignment.Repo]
