@@ -18,9 +18,7 @@ defmodule GraphqlAssignmentWeb.Resolvers.User do
 
   def get_by_email(%{email: email}, _), do: User.get_by_email(email)
 
-  def create(%{id: id, name: _name, email: _email, preferences: _preferences} = params, _) do
-    id = String.to_integer(id)
-    params = Map.update!(params, :id, fn _ -> id end)
+  def create(%{name: _name, email: _email, preferences: _preferences} = params, _) do
     User.create(params)
   end
 

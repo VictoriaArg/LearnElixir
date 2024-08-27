@@ -84,16 +84,8 @@ defmodule GraphqlAssignment.User do
   end
 
   @spec create(map()) :: {:error, map()} | {:ok, map()}
-  def create(%{id: id, name: name, email: email, preferences: preferences} = _params) do
-    case Enum.find(@users, &(&1.id === id)) do
-      nil ->
-        with {:ok, new_user} <- create_new_user(id, name, email, preferences) do
-          {:ok, new_user}
-        end
-
-      _user ->
-        {:error, %{message: "id already in use", details: %{id: id}}}
-    end
+  def create(params) do
+    Accounts.create_user(params)
   end
 
   @spec update(String.t(), map()) :: {:error, map()} | {:ok, map()}
@@ -112,10 +104,6 @@ defmodule GraphqlAssignment.User do
         updated_user = Map.merge(user, preferences)
         {:ok, updated_user}
     end
-  end
-
-  defp create_new_user(id, name, email, preferences) do
-    {:ok, Map.new(id: id, name: name, email: email, preferences: preferences)}
   end
 
   defp matches_preferences?(user_prefs, input_prefs) do

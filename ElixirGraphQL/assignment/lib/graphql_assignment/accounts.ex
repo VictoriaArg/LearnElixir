@@ -54,14 +54,37 @@ defmodule GraphqlAssignment.Accounts do
     end
   end
 
-  # def create_user() do
-  # end
+  def create_user(params) do
+    changeset = User.changeset(%User{}, params)
+
+    with true <- changeset.valid?,
+         {:ok, user} <- Repo.insert(changeset) do
+      {:ok, Repo.preload(user, :preference)}
+    else
+      {:error, changeset} ->
+        {:error,
+         %{
+           message: "not valid arguments",
+           details: %{errors: changeset.errors}
+         }}
+    end
+  end
 
   def update_user(id, params) do
     with {:ok, [user]} <- get_user_by(:id, id) do
-      user
-      |> User.changeset(params)
-      |> Repo.update()
+      changeset = User.changeset(user, params)
+
+      with true <- changeset.valid?,
+           {:ok, user} <- Repo.update(changeset) do
+        {:ok, Repo.preload(user, :preference)}
+      else
+        {:error, changeset} ->
+          {:error,
+           %{
+             message: "not valid arguments",
+             details: %{errors: changeset.errors}
+           }}
+      end
     end
   end
 
