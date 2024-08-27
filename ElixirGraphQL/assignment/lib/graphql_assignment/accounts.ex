@@ -34,12 +34,12 @@ defmodule GraphqlAssignment.Accounts do
           by_email(value)
       end
 
-    users =
+    user =
       query
       |> Repo.all()
       |> Repo.preload(:preference)
 
-    case users do
+    case user do
       [] ->
         {:error,
          %{
@@ -49,8 +49,8 @@ defmodule GraphqlAssignment.Accounts do
            }
          }}
 
-      users ->
-        {:ok, users}
+      user ->
+        {:ok, user}
     end
   end
 
@@ -76,7 +76,7 @@ defmodule GraphqlAssignment.Accounts do
 
       with true <- changeset.valid?,
            {:ok, user} <- Repo.update(changeset) do
-        {:ok, Repo.preload(user, :preference)}
+        {:ok, user}
       else
         {:error, changeset} ->
           {:error,

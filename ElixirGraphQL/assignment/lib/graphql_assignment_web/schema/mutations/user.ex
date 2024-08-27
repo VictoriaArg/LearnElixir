@@ -5,7 +5,6 @@ defmodule GraphqlAssignmentWeb.Schema.Mutations.User do
 
   object :user_mutations do
     field :create_user, list_of(:user) do
-      arg(:id, :id)
       arg(:name, :string)
       arg(:email, :string)
       arg(:preferences, :user_preferences_input)
