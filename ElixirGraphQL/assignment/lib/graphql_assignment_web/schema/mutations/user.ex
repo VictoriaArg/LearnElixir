@@ -14,7 +14,7 @@ defmodule GraphqlAssignmentWeb.Schema.Mutations.User do
     end
 
     field :update_user, :user do
-      arg(:id, :id)
+      arg(:id, non_null(:id))
       arg(:name, :string)
       arg(:email, :string)
 

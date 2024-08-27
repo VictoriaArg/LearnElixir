@@ -4,8 +4,22 @@ defmodule GraphqlAssignment.Accounts do
   alias GraphqlAssignment.Accounts.User
 
   def get_all_users() do
-    Repo.all(User)
+    users =
+      User
+      |> Repo.all()
+      |> Repo.preload(:preference)
+
+    case users do
+      nil -> {:error, %{message: "not allowed to see all users"}}
+      users -> {:ok, users}
+    end
   end
+
+  # def get_user_by(:preferences, params) do
+  #   params
+  #   |> by_preferences
+  #   |> Repo.all()
+  # end
 
   def get_user_by(param, value) do
     query =
@@ -20,14 +34,36 @@ defmodule GraphqlAssignment.Accounts do
           by_email(value)
       end
 
-    Repo.all(query)
+    users =
+      query
+      |> Repo.all()
+      |> Repo.preload(:preference)
+
+    case users do
+      [] ->
+        {:error,
+         %{
+           message: "not found",
+           details: %{
+             {param, value}
+           }
+         }}
+
+      users ->
+        {:ok, users}
+    end
   end
 
   # def create_user() do
   # end
 
-  # def update_user() do
-  # end
+  def update_user(id, params) do
+    with {:ok, [user]} <- get_user_by(:id, id) do
+      user
+      |> User.changeset(params)
+      |> Repo.update()
+    end
+  end
 
   # def update_preferences() do
   # end
@@ -43,4 +79,13 @@ defmodule GraphqlAssignment.Accounts do
   defp by_email(email) do
     from(u in User, where: u.email == ^email)
   end
+
+  # def by_preferences(params) do
+  #   from u in User,
+  #     join: p in assoc(u, :preference),
+  #     where: (Enum.all?(input_prefs, fn {key, value} ->
+  #       Map.get(user_prefs, key) == value
+  #     end)),
+  #     select: u
+  # end
 end
