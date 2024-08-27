@@ -3,10 +3,10 @@ defmodule GraphqlAssignment.Accounts.User do
   import Ecto.Changeset
 
   schema "users" do
-    field :name, :string
-    field :email, :string
+    field(:name, :string)
+    field(:email, :string)
 
-    has_one :preference, GraphqlAssignment.Accounts.Preference
+    has_one(:preference, GraphqlAssignment.Accounts.Preference)
     timestamps()
   end
 

@@ -6,11 +6,17 @@ defmodule GraphqlAssignmentWeb.Resolvers.User do
     User.get(id)
   end
 
+  def get_all(%{}, _) do
+    User.get_all()
+  end
+
   def get_by_preferences(preferences, _) do
     User.get_by_preferences(preferences)
   end
 
   def get_by_name(%{name: name}, _), do: User.get_by_name(name)
+
+  def get_by_email(%{email: email}, _), do: User.get_by_email(email)
 
   def create(%{id: id, name: _name, email: _email, preferences: _preferences} = params, _) do
     id = String.to_integer(id)

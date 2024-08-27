@@ -10,7 +10,7 @@ defmodule GraphqlAssignmentWeb.Schema.Queries.User do
       resolve(&Resolvers.User.get/2)
     end
 
-    field :users, list_of(:user) do
+    field :users_with_preferences, list_of(:user) do
       arg(:likes_emails, :boolean)
       arg(:likes_phone_calls, :boolean)
       arg(:likes_faxes, :boolean)
@@ -18,10 +18,20 @@ defmodule GraphqlAssignmentWeb.Schema.Queries.User do
       resolve(&Resolvers.User.get_by_preferences/2)
     end
 
+    field :all_users, list_of(:user) do
+      resolve(&Resolvers.User.get_all/2)
+    end
+
     field :users_by_name, list_of(:user) do
       arg(:name, non_null(:string))
 
       resolve(&Resolvers.User.get_by_name/2)
+    end
+
+    field :users_by_email, list_of(:user) do
+      arg(:email, non_null(:string))
+
+      resolve(&Resolvers.User.get_by_email/2)
     end
   end
 end

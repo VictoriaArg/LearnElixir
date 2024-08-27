@@ -3,11 +3,11 @@ defmodule GraphqlAssignment.Accounts.Preference do
   import Ecto.Changeset
 
   schema "preferences" do
-    field :likes_emails, :boolean, default: false
-    field :likes_phone_calls, :boolean, default: false
-    field :likes_faxes, :boolean, default: false
+    field(:likes_emails, :boolean, default: false)
+    field(:likes_phone_calls, :boolean, default: false)
+    field(:likes_faxes, :boolean, default: false)
 
-    belongs_to :user, GraphqlAssignment.Accounts.User
+    belongs_to(:user, GraphqlAssignment.Accounts.User)
     timestamps()
   end
 

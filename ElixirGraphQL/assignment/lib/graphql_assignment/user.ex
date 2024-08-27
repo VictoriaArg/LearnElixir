@@ -1,4 +1,6 @@
 defmodule GraphqlAssignment.User do
+  alias GraphqlAssignment.Accounts
+
   @users [
     %{
       id: 1,
@@ -43,28 +45,47 @@ defmodule GraphqlAssignment.User do
   ]
 
   @spec get_all() :: list()
-  def get_all(), do: @users
+  def get_all() do
+    case Accounts.get_all_users() do
+      nil -> {:error, %{message: "not allowed to see all users"}}
+      users -> {:ok, users}
+    end
+  end
 
   @spec get(String.t()) :: {:error, map()} | {:ok, map()}
   def get(id) do
-    case Enum.find(@users, &(&1.id === id)) do
-      nil -> {:error, %{message: "not found", details: %{id: id}}}
-      user -> {:ok, user}
+    case Accounts.get_user_by(:id, id) do
+      [] -> {:error, %{message: "not found", details: %{id: id}}}
+      [user] -> {:ok, user}
     end
   end
 
   @spec get_by_name(String.t()) :: {:error, map()} | {:ok, map()}
   def get_by_name(name) do
-    case Enum.filter(
-           @users,
-           &(&1.name === name)
-         ) do
-      [] ->
+    case Accounts.get_user_by(:name, name) do
+      nil ->
         {:error,
          %{
            message: "not found",
            details: %{
              name: name
+           }
+         }}
+
+      users ->
+        {:ok, users}
+    end
+  end
+
+  @spec get_by_email(String.t()) :: {:error, map()} | {:ok, map()}
+  def get_by_email(email) do
+    case Accounts.get_user_by(:email, email) do
+      nil ->
+        {:error,
+         %{
+           message: "not found",
+           details: %{
+             email: email
            }
          }}
 
