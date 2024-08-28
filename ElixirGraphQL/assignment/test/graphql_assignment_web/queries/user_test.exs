@@ -12,7 +12,7 @@ defmodule GraphqlAssignmentWeb.Schema.Queries.UserTest do
     name
     email
 
-    preferences {
+    preference {
       likesEmails
       likesPhoneCalls
       likesFaxes
@@ -34,7 +34,7 @@ defmodule GraphqlAssignmentWeb.Schema.Queries.UserTest do
                  "email" => "bill@gmail.com",
                  "name" => "Bill",
                  "id" => "1",
-                 "preferences" => %{
+                 "preference" => %{
                    "likesEmails" => false,
                    "likesFaxes" => true,
                    "likesPhoneCalls" => true
@@ -51,7 +51,7 @@ defmodule GraphqlAssignmentWeb.Schema.Queries.UserTest do
     name
     email
 
-    preferences {
+    preference {
       likesEmails
       likesPhoneCalls
       likesFaxes
@@ -74,7 +74,7 @@ defmodule GraphqlAssignmentWeb.Schema.Queries.UserTest do
                    "email" => "timmmy@gmail.com",
                    "id" => "6",
                    "name" => "Timmmy",
-                   "preferences" => %{
+                   "preference" => %{
                      "likesEmails" => false,
                      "likesFaxes" => false,
                      "likesPhoneCalls" => false
@@ -85,14 +85,14 @@ defmodule GraphqlAssignmentWeb.Schema.Queries.UserTest do
            }
   end
 
-  @users_by_preferences """
+  @users_by_preference """
   query users($likesEmails: Boolean, $likesFaxes: Boolean, $likesPhoneCalls: Boolean) {
     users(likesEmails: $likesEmails, likesFaxes: $likesFaxes, likesPhoneCalls: $likesPhoneCalls) {
     id
     name
     email
 
-    preferences {
+    preference {
       likesEmails
       likesPhoneCalls
       likesFaxes
@@ -104,7 +104,7 @@ defmodule GraphqlAssignmentWeb.Schema.Queries.UserTest do
   test "query users by one preference", %{conn: conn} do
     conn =
       post(conn, "/graphql", %{
-        "query" => @users_by_preferences,
+        "query" => @users_by_preference,
         "variables" => %{likesEmails: true}
       })
 
@@ -115,7 +115,7 @@ defmodule GraphqlAssignmentWeb.Schema.Queries.UserTest do
                    "email" => "alice@gmail.com",
                    "id" => "2",
                    "name" => "Alice",
-                   "preferences" => %{
+                   "preference" => %{
                      "likesEmails" => true,
                      "likesFaxes" => true,
                      "likesPhoneCalls" => false
@@ -125,7 +125,7 @@ defmodule GraphqlAssignmentWeb.Schema.Queries.UserTest do
                    "email" => "jill@hotmail.com",
                    "id" => "3",
                    "name" => "Jill",
-                   "preferences" => %{
+                   "preference" => %{
                      "likesEmails" => true,
                      "likesFaxes" => false,
                      "likesPhoneCalls" => true
@@ -136,10 +136,10 @@ defmodule GraphqlAssignmentWeb.Schema.Queries.UserTest do
            }
   end
 
-  test "query users by all preferences", %{conn: conn} do
+  test "query users by all preference", %{conn: conn} do
     conn =
       post(conn, "/graphql", %{
-        "query" => @users_by_preferences,
+        "query" => @users_by_preference,
         "variables" => %{likesEmails: false, likesFaxes: false, likesPhoneCalls: false}
       })
 
@@ -150,7 +150,7 @@ defmodule GraphqlAssignmentWeb.Schema.Queries.UserTest do
                    "email" => "timmmy@gmail.com",
                    "id" => "6",
                    "name" => "Timmmy",
-                   "preferences" => %{
+                   "preference" => %{
                      "likesEmails" => false,
                      "likesFaxes" => false,
                      "likesPhoneCalls" => false

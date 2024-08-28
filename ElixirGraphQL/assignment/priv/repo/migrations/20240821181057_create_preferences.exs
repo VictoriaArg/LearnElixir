@@ -1,4 +1,4 @@
-defmodule GraphqlAssignment.Repo.Migrations.CreatePreferences do
+defmodule GraphqlAssignment.Repo.Migrations.Createpreference do
   use Ecto.Migration
 
   def change do
@@ -6,8 +6,11 @@ defmodule GraphqlAssignment.Repo.Migrations.CreatePreferences do
       add :likes_emails, :boolean, default: false, null: false
       add :likes_phone_calls, :boolean, default: false, null: false
       add :likes_faxes, :boolean, default: false, null: false
+      add :user_id, references(:users, on_delete: :delete_all), null: false
 
       timestamps()
     end
+
+    create index(:preferences, [:user_id])
   end
 end
