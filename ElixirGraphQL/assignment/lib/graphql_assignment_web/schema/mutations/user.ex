@@ -7,7 +7,7 @@ defmodule GraphqlAssignmentWeb.Schema.Mutations.User do
     field :create_user, list_of(:user) do
       arg(:name, :string)
       arg(:email, :string)
-      arg(:preferences, :user_preferences_input)
+      arg(:preference, :user_preference_input)
 
       resolve(&Resolvers.User.create/2)
     end
@@ -20,13 +20,13 @@ defmodule GraphqlAssignmentWeb.Schema.Mutations.User do
       resolve(&Resolvers.User.update/2)
     end
 
-    field :update_user_preferences, :user_preferences do
+    field :update_user_preference, :user_preference do
       arg(:user_id, :id)
       arg(:likes_emails, :boolean)
       arg(:likes_phone_calls, :boolean)
       arg(:likes_faxes, :boolean)
 
-      resolve(&Resolvers.User.update_preferences/2)
+      resolve(&Resolvers.User.update_preference/2)
     end
   end
 end

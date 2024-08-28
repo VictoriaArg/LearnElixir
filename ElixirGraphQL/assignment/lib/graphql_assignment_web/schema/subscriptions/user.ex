@@ -10,8 +10,8 @@ defmodule GraphqlAssignmentWeb.Schema.Subscriptions.User do
       end)
     end
 
-    field :updated_user_preferences, :user do
-      trigger(:update_user_preferences, topic: fn %{id: id} -> Integer.to_string(id) end)
+    field :updated_user_preference, :user do
+      trigger(:update_user_preference, topic: fn %{id: id} -> Integer.to_string(id) end)
 
       config(fn args, _info ->
         {:ok, topic: args.id}

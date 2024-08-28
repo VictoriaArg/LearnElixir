@@ -6,7 +6,7 @@ defmodule GraphqlAssignment.User do
       id: 1,
       name: "Bill",
       email: "bill@gmail.com",
-      preferences: %{
+      preference: %{
         likes_emails: false,
         likes_phone_calls: true,
         likes_faxes: true
@@ -16,7 +16,7 @@ defmodule GraphqlAssignment.User do
       id: 2,
       name: "Alice",
       email: "alice@gmail.com",
-      preferences: %{
+      preference: %{
         likes_emails: true,
         likes_phone_calls: false,
         likes_faxes: true
@@ -26,7 +26,7 @@ defmodule GraphqlAssignment.User do
       id: 3,
       name: "Jill",
       email: "jill@hotmail.com",
-      preferences: %{
+      preference: %{
         likes_emails: true,
         likes_phone_calls: true,
         likes_faxes: false
@@ -36,7 +36,7 @@ defmodule GraphqlAssignment.User do
       id: 6,
       name: "Timmmy",
       email: "timmmy@gmail.com",
-      preferences: %{
+      preference: %{
         likes_emails: false,
         likes_phone_calls: false,
         likes_faxes: false
@@ -64,17 +64,17 @@ defmodule GraphqlAssignment.User do
     Accounts.get_user_by(:email, email)
   end
 
-  @spec get_by_preferences(map()) :: {:error, map()} | {:ok, list()}
-  def get_by_preferences(preferences) do
+  @spec get_by_preference(map()) :: {:error, map()} | {:ok, list()}
+  def get_by_preference(preference) do
     case Enum.filter(@users, fn user ->
-           matches_preferences?(user.preferences, preferences)
+           matches_preference?(user.preference, preference)
          end) do
       [] ->
         {:error,
          %{
            message: "not found",
            details: %{
-             preferences: preferences
+             preference: preference
            }
          }}
 
@@ -93,20 +93,12 @@ defmodule GraphqlAssignment.User do
     Accounts.update_user(id, params)
   end
 
-  @spec update_preferences(String.t(), map()) :: {:error, map()} | {:ok, map()}
-  def update_preferences(id, params) do
-    case Enum.find(@users, &(&1.id === id)) do
-      nil ->
-        {:error, %{message: "user not found", details: %{id: id}}}
-
-      user ->
-        {_id, preferences} = Map.pop!(params, :user_id)
-        updated_user = Map.merge(user, preferences)
-        {:ok, updated_user}
-    end
+  @spec update_preference(String.t(), map()) :: {:error, map()} | {:ok, map()}
+  def update_preference(id, params) do
+    Accounts.update_preference(id, params)
   end
 
-  defp matches_preferences?(user_prefs, input_prefs) do
+  defp matches_preference?(user_prefs, input_prefs) do
     Enum.all?(input_prefs, fn {key, value} ->
       Map.get(user_prefs, key) == value
     end)

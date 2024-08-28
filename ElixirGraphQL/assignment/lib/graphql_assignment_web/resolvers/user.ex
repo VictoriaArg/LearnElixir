@@ -10,15 +10,15 @@ defmodule GraphqlAssignmentWeb.Resolvers.User do
     User.get_all()
   end
 
-  def get_by_preferences(preferences, _) do
-    User.get_by_preferences(preferences)
+  def get_by_preference(preference, _) do
+    User.get_by_preference(preference)
   end
 
   def get_by_name(%{name: name}, _), do: User.get_by_name(name)
 
   def get_by_email(%{email: email}, _), do: User.get_by_email(email)
 
-  def create(%{name: _name, email: _email, preferences: _preferences} = params, _) do
+  def create(%{name: _name, email: _email, preference: _preference} = params, _) do
     User.create(params)
   end
 
@@ -35,12 +35,12 @@ defmodule GraphqlAssignmentWeb.Resolvers.User do
     {:error, %{message: "arguments not provided"}}
   end
 
-  def update_preferences(%{user_id: id} = params, _) do
+  def update_preference(%{user_id: id} = params, _) do
     id = String.to_integer(id)
-    User.update_preferences(id, params)
+    User.update_preference(id, params)
   end
 
-  def update_preferences(_params, _) do
+  def update_preference(_params, _) do
     {:error, %{message: "argument user_id not provided"}}
   end
 end

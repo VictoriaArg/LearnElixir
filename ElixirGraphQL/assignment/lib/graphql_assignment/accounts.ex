@@ -15,9 +15,9 @@ defmodule GraphqlAssignment.Accounts do
     end
   end
 
-  # def get_user_by(:preferences, params) do
+  # def get_user_by(:preference, params) do
   #   params
-  #   |> by_preferences
+  #   |> by_preference
   #   |> Repo.all()
   # end
 
@@ -49,7 +49,7 @@ defmodule GraphqlAssignment.Accounts do
            }
          }}
 
-      user ->
+      [user] ->
         {:ok, user}
     end
   end
@@ -59,7 +59,7 @@ defmodule GraphqlAssignment.Accounts do
 
     with true <- changeset.valid?,
          {:ok, user} <- Repo.insert(changeset) do
-      {:ok, Repo.preload(user, :preference)}
+      {:ok, user}
     else
       {:error, changeset} ->
         {:error,
@@ -71,11 +71,27 @@ defmodule GraphqlAssignment.Accounts do
   end
 
   def update_user(id, params) do
-    with {:ok, [user]} <- get_user_by(:id, id) do
+    with {:ok, user} <- get_user_by(:id, id) do
       changeset = User.changeset(user, params)
 
-      with true <- changeset.valid?,
-           {:ok, user} <- Repo.update(changeset) do
+      if changeset.valid? do
+        Repo.update(changeset)
+      else
+        {:error,
+         %{
+           message: "not valid arguments",
+           details: %{errors: changeset.errors}
+         }}
+      end
+    end
+  end
+
+  def update_preference(id, params) do
+    with {:ok, [user]} <- get_user_by(:id, id) do
+      changeset = User.changeset(user, %{preference: params})
+
+      with true <- changeset.valid? do
+        {:ok, user} = Repo.update(changeset)
         {:ok, user}
       else
         {:error, changeset} ->
@@ -87,9 +103,6 @@ defmodule GraphqlAssignment.Accounts do
       end
     end
   end
-
-  # def update_preferences() do
-  # end
 
   defp by_id(id) do
     from(u in User, where: u.id == ^id)
@@ -103,7 +116,7 @@ defmodule GraphqlAssignment.Accounts do
     from(u in User, where: u.email == ^email)
   end
 
-  # def by_preferences(params) do
+  # def by_preference(params) do
   #   from u in User,
   #     join: p in assoc(u, :preference),
   #     where: (Enum.all?(input_prefs, fn {key, value} ->
