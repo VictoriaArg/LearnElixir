@@ -21,9 +21,4 @@ defmodule GraphqlAssignment.User do
   def update(id, params) do
     Accounts.update_user(id, params)
   end
-
-  @spec update_preference(String.t(), map()) :: {:error, map()} | {:ok, map()}
-  def update_preference(id, params) do
-    Accounts.update_user(id, params)
-  end
 end

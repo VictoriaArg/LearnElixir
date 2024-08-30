@@ -1,10 +1,10 @@
 defmodule GraphqlAssignmentWeb.Resolvers.Preference do
   alias GraphqlAssignment.Preference
 
-def update(%{user_id: id} = params, _) do
+  def update(%{user_id: id} = params, _) do
     id = String.to_integer(id)
     preference = Map.delete(params, :user_id)
-    Preference.update(id, %{preference: preference})
+    Preference.update(id, preference)
   end
 
   def update(_params, _) do

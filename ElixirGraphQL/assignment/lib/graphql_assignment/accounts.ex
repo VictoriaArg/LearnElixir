@@ -20,6 +20,6 @@ defmodule GraphqlAssignment.Accounts do
   end
 
   def update_preference(user_id, params) do
-    Actions.update(Preference, user_id, params)
+    Actions.find_and_update(Preference, %{user_id: user_id}, params)
   end
 end

@@ -19,14 +19,5 @@ defmodule GraphqlAssignmentWeb.Schema.Mutations.User do
 
       resolve(&Resolvers.User.update/2)
     end
-
-    field :update_user_preference, :user_preference do
-      arg(:user_id, :id)
-      arg(:likes_emails, :boolean)
-      arg(:likes_phone_calls, :boolean)
-      arg(:likes_faxes, :boolean)
-
-      resolve(&Resolvers.Preference.update/2)
-    end
   end
 end
