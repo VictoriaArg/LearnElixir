@@ -48,7 +48,8 @@ defmodule GraphqlAssignment.MixProject do
       {:absinthe_phoenix, "~> 2.0"},
       {:ecto_sql, "~> 3.0"},
       {:postgrex, "~> 0.15"},
-      {:dotenv, "~> 3.0.0"}
+      {:dotenv, "~> 3.0.0"},
+      {:dataloader, "~> 1.0"}
     ]
   end
 

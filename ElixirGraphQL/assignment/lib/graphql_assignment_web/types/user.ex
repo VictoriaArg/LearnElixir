@@ -1,5 +1,6 @@
 defmodule GraphqlAssignmentWeb.Types.User do
   use Absinthe.Schema.Notation
+  import Absinthe.Resolution.Helpers, only: [dataloader: 2]
 
   @desc "A user that has name, email, and preference"
   object :user do
@@ -7,7 +8,7 @@ defmodule GraphqlAssignmentWeb.Types.User do
     field(:name, :string)
     field(:email, :string)
 
-    field(:preference, :user_preference)
+    field(:preference, :user_preference, resolve: dataloader(GraphqlAssignment.Accounts, :preference))
   end
 
   @desc "User preference for emails, phone calls and faxes"

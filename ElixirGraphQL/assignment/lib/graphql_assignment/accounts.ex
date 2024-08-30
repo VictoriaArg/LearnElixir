@@ -4,10 +4,7 @@ defmodule GraphqlAssignment.Accounts do
   alias GraphqlAssignment.Accounts.User
 
   def get_all_users() do
-    users =
-      User
-      |> Repo.all()
-      |> Repo.preload(:preference)
+    users = Repo.all(User)
 
     case users do
       nil -> {:error, %{message: "not allowed to see all users"}}
@@ -34,12 +31,7 @@ defmodule GraphqlAssignment.Accounts do
           by_email(value)
       end
 
-    user =
-      query
-      |> Repo.all()
-      |> Repo.preload(:preference)
-
-    case user do
+    case Repo.all(query) do
       [] ->
         {:error,
          %{

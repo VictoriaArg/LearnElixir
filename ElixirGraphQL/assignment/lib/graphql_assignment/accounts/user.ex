@@ -12,13 +12,12 @@ defmodule GraphqlAssignment.Accounts.User do
   end
 
   @available_fields [:name, :email]
-  @required_fields [:name, :email]
 
   @doc false
   def changeset(user, attrs) do
     user
     |> cast(attrs, @available_fields)
-    |> validate_required(@required_fields)
+    |> validate_required(@available_fields)
     |> cast_assoc(:preference, with: &Preference.changeset/2)
   end
 end
