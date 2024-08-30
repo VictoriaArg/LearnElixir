@@ -13,6 +13,10 @@ defmodule GraphqlAssignment.Accounts.User do
 
   @available_fields [:name, :email]
 
+  def create_changeset(params) do
+    changeset(%GraphqlAssignment.Accounts.User{}, params)
+  end
+
   @doc false
   def changeset(user, attrs) do
     user

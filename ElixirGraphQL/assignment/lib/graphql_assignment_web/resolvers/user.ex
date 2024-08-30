@@ -1,22 +1,21 @@
 defmodule GraphqlAssignmentWeb.Resolvers.User do
   alias GraphqlAssignment.User
 
+
   def get(%{id: id}, _) do
     id = String.to_integer(id)
-    User.get(id)
+    User.get(%{id: id})
   end
 
-  def get_all(%{}, _) do
-    User.get_all()
-  end
+  def get(params, _), do: User.get(params)
 
   def get_by_preference(preference, _) do
-    User.get_by_preference(preference)
+    User.get(%{preference: preference})
   end
 
-  def get_by_name(%{name: name}, _), do: User.get_by_name(name)
-
-  def get_by_email(%{email: email}, _), do: User.get_by_email(email)
+  def get_all(params, _) do
+    User.get_all(params)
+  end
 
   def create(%{name: _name, email: _email, preference: _preference} = params, _) do
     User.create(params)
@@ -37,7 +36,8 @@ defmodule GraphqlAssignmentWeb.Resolvers.User do
 
   def update_preference(%{user_id: id} = params, _) do
     id = String.to_integer(id)
-    User.update_preference(id, params)
+    preference = Map.delete(params, :user_id)
+    User.update(id, %{preference: preference})
   end
 
   def update_preference(_params, _) do

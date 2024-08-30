@@ -17,6 +17,10 @@ config :graphql_assignment, GraphqlAssignment.Repo,
 config :graphql_assignment,
   ecto_repos: [GraphqlAssignment.Repo]
 
+config :ecto_shorts,
+  repo: GraphqlAssignment.Repo,
+  error_module: EctoShorts.Actions.Error
+
 # Configures the endpoint
 config :graphql_assignment, GraphqlAssignmentWeb.Endpoint,
   url: [host: "localhost"],

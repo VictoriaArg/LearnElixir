@@ -8,7 +8,9 @@ defmodule GraphqlAssignmentWeb.Types.User do
     field(:name, :string)
     field(:email, :string)
 
-    field(:preference, :user_preference, resolve: dataloader(GraphqlAssignment.Accounts, :preference))
+    field(:preference, :user_preference,
+      resolve: dataloader(GraphqlAssignment.Accounts, :preference)
+    )
   end
 
   @desc "User preference for emails, phone calls and faxes"

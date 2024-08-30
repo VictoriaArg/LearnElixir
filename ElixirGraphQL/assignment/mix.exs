@@ -49,7 +49,8 @@ defmodule GraphqlAssignment.MixProject do
       {:ecto_sql, "~> 3.0"},
       {:postgrex, "~> 0.15"},
       {:dotenv, "~> 3.0.0"},
-      {:dataloader, "~> 1.0"}
+      {:dataloader, "~> 1.0"},
+      {:ecto_shorts, "~> 1.0"}
     ]
   end
 

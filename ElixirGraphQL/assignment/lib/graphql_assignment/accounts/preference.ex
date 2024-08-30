@@ -14,6 +14,10 @@ defmodule GraphqlAssignment.Accounts.Preference do
 
   @required_fields [:likes_emails, :likes_phone_calls, :likes_faxes]
 
+  def create_changeset(params) do
+    changeset(%GraphqlAssignment.Accounts.Preference{}, params)
+  end
+
   @doc false
   def changeset(preference, attrs) do
     preference
