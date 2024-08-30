@@ -3,7 +3,13 @@ defmodule GraphqlAssignmentWeb.Schema.Subscriptions.Preference do
 
   object :preference_subscriptions do
     field :updated_preference, :user_preference do
-      trigger(:update_preferences, topic: fn %{user_id: id} -> Integer.to_string(id) end)
+      arg(:id, non_null(:id))
+
+      trigger(:update_preference,
+        topic: fn %{user_id: id} ->
+          Integer.to_string(id)
+        end
+      )
 
       config(fn args, _info ->
         {:ok, topic: args.id}
