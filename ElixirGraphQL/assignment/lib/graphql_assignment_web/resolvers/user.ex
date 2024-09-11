@@ -29,12 +29,12 @@ defmodule GraphqlAssignmentWeb.Resolvers.User do
     {:error, %{message: "arguments not provided"}}
   end
 
-  def update_user_preference(%{user_id: id} = params, _) do
+  def update_preference(%{user_id: id} = params, _) do
     id = String.to_integer(id)
     User.update_preference(id, params)
   end
 
-  def update_user_preference(_params, _) do
+  def update_preference(_params, _) do
     {:error, %{message: "argument user_id not provided"}}
   end
 end

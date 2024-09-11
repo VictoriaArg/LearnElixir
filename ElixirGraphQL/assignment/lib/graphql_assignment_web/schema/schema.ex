@@ -4,9 +4,7 @@ defmodule GraphqlAssignmentWeb.Schema do
   import_types(GraphqlAssignmentWeb.Types.User)
   import_types(GraphqlAssignmentWeb.Schema.Queries.User)
   import_types(GraphqlAssignmentWeb.Schema.Mutations.User)
-  import_types(GraphqlAssignmentWeb.Schema.Mutations.Preference)
   import_types(GraphqlAssignmentWeb.Schema.Subscriptions.User)
-  import_types(GraphqlAssignmentWeb.Schema.Subscriptions.Preference)
 
   query do
     import_fields(:user_queries)
