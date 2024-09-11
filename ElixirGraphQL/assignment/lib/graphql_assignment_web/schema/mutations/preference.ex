@@ -10,7 +10,7 @@ defmodule GraphqlAssignmentWeb.Schema.Mutations.Preference do
       arg(:likes_phone_calls, :boolean)
       arg(:likes_faxes, :boolean)
 
-      resolve(&Resolvers.Preference.update/2)
+      resolve(&Resolvers.User.update_user_preference/2)
     end
   end
 end
