@@ -8,16 +8,16 @@ defmodule GraphqlAssignment.Accounts do
     Actions.all(User, params)
   end
 
-  def get_users_by_preference(preference_params) do
+  def get_users_by_preference(params) do
     User
     |> join(:inner, [u], p in assoc(u, :preference))
-    |> where(^preference_filter_conditions(preference_params))
+    |> where(^preference_filter_conditions(params))
     |> preload(:preference)
     |> Repo.all()
   end
 
-  defp preference_filter_conditions(preference_params) do
-    Enum.reduce(preference_params, dynamic(true), fn {key, value}, query ->
+  defp preference_filter_conditions(params) do
+    Enum.reduce(params, dynamic(true), fn {key, value}, query ->
       dynamic([u, p], field(p, ^key) == ^value and ^query)
     end)
   end
