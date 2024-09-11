@@ -1,6 +1,5 @@
 defmodule GraphqlAssignmentWeb.Resolvers.User do
   alias GraphqlAssignment.User
-  alias GraphqlAssignment.Preference
 
   def get(%{id: id}, _) do
     id = String.to_integer(id)
@@ -32,7 +31,7 @@ defmodule GraphqlAssignmentWeb.Resolvers.User do
 
   def update_user_preference(%{user_id: id} = params, _) do
     id = String.to_integer(id)
-    Preference.update(id, params)
+    User.update_preference(id, params)
   end
 
   def update_user_preference(_params, _) do
