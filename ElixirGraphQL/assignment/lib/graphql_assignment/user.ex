@@ -6,6 +6,14 @@ defmodule GraphqlAssignment.User do
     Accounts.find_user(params)
   end
 
+  @spec get(map()) :: {:error, map()} | {:ok, list()}
+  def get_by_preference(%{preference: preference}) do
+    case Accounts.get_users_by_preference(preference) do
+      {:error, error} -> {:error, %{message: error}}
+      users -> {:ok, users}
+    end
+  end
+
   @spec get_all() :: list()
   def get_all(params \\ %{}) do
     users = Accounts.get_all_users(params)

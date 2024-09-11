@@ -9,7 +9,7 @@ defmodule GraphqlAssignmentWeb.Resolvers.User do
   def get(params, _), do: User.get_all(params)
 
   def get_by_preference(preference, _) do
-    User.get(%{preference: preference})
+    User.get_by_preference(%{preference: preference})
   end
 
   def create(%{name: _name, email: _email, preference: _preference} = params, _) do
