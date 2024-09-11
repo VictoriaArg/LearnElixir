@@ -16,12 +16,6 @@ defmodule GraphqlAssignment.Accounts do
     |> Repo.all()
   end
 
-  defp preference_filter_conditions(params) do
-    Enum.reduce(params, dynamic(true), fn {key, value}, query ->
-      dynamic([u, p], field(p, ^key) == ^value and ^query)
-    end)
-  end
-
   def find_user(params) do
     Actions.find(User, params)
   end
@@ -36,5 +30,11 @@ defmodule GraphqlAssignment.Accounts do
 
   def update_preference(user_id, params) do
     Actions.find_and_update(Preference, %{user_id: user_id}, params)
+  end
+
+  defp preference_filter_conditions(params) do
+    Enum.reduce(params, dynamic(true), fn {key, value}, query ->
+      dynamic([u, p], field(p, ^key) == ^value and ^query)
+    end)
   end
 end
