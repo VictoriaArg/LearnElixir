@@ -1,6 +1,4 @@
 defmodule GraphqlAssignment.Accounts do
-  import Ecto.Query
-  alias GraphqlAssignment.Repo
   alias GraphqlAssignment.Accounts.{User, Preference}
   alias EctoShorts.Actions
 
@@ -9,11 +7,7 @@ defmodule GraphqlAssignment.Accounts do
   end
 
   def get_users_by_preference(params) do
-    User
-    |> join(:inner, [u], p in assoc(u, :preference))
-    |> where(^preference_filter_conditions(params))
-    |> preload(:preference)
-    |> Repo.all()
+    User.get_by_preference(params)
   end
 
   def find_user(params) do
@@ -30,11 +24,5 @@ defmodule GraphqlAssignment.Accounts do
 
   def update_preference(user_id, params) do
     Actions.find_and_update(Preference, %{user_id: user_id}, params)
-  end
-
-  defp preference_filter_conditions(params) do
-    Enum.reduce(params, dynamic(true), fn {key, value}, query ->
-      dynamic([u, p], field(p, ^key) == ^value and ^query)
-    end)
   end
 end
