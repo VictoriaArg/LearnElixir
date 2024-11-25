@@ -1,5 +1,3 @@
-
-
 defmodule GraphqlAssignment.Accounts.Preference do
   use Ecto.Schema
   import Ecto.Changeset

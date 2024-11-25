@@ -26,7 +26,7 @@ defmodule GraphqlAssignment.Accounts.User do
     |> cast_assoc(:preference, with: &GraphqlAssignment.Accounts.Preference.changeset/2)
   end
 
-     def get_by_preference(params) do
+  def get_by_preference(params) do
     query =
       from(u in GraphqlAssignment.Accounts.User,
         join: p in assoc(u, :preference),
