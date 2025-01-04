@@ -1,28 +1,29 @@
 defmodule GraphqlAssignmentWeb.Resolvers.User do
-  alias GraphqlAssignment.User
+  alias GraphqlAssignment.Accounts
 
   def get(%{id: id}, _) do
     id = String.to_integer(id)
-    User.get(%{id: id})
+    Accounts.get_user(%{id: id})
   end
 
-  def get(params, _), do: User.get_all(params)
+  def get(params, _), do: Accounts.get_all_users(params)
 
-  def get_by_preference(preference, _) do
-    User.get_by_preference(%{preference: preference})
+  def get_by_preference(params, _) do
+    {preference, filters} = Map.split(params, [:likes_emails, :likes_faxes, :likes_phone_calls])
+    Accounts.get_users_by_preference(preference, filters)
   end
 
   def create(%{name: _name, email: _email, preference: _preference} = params, _) do
-    User.create(params)
+    Accounts.create_user(params)
   end
 
   def create(_params, _) do
     {:error, %{message: "arguments not provided"}}
   end
 
-  def update(%{id: id, name: _name, email: _email} = params, _) do
+  def update(%{id: id} = params, _) do
     id = String.to_integer(id)
-    User.update(id, params)
+    Accounts.update_user(id, params)
   end
 
   def update(_params, _) do
@@ -31,7 +32,7 @@ defmodule GraphqlAssignmentWeb.Resolvers.User do
 
   def update_preference(%{user_id: id} = params, _) do
     id = String.to_integer(id)
-    User.update_preference(id, params)
+    Accounts.update_preference(id, params)
   end
 
   def update_preference(_params, _) do
